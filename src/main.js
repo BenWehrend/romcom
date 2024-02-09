@@ -60,10 +60,9 @@ function saveCover() {
       return
     };
   }
-  savedCovers.push(currentCover)
+  savedCovers.push(currentCover);
+  appendCover(currentCover);
 };
-
-
 
 function getCover(e) {
   covers.push(coverInput.value);
@@ -88,16 +87,7 @@ function getCover(e) {
   e.preventDefault();
 }
 
-/* 
-<section class="mini-cover">
-  <img class="cover-image" src="./assets/prairie.jpg">
-  <div class="cover-title">Test Title</div>
-  <div class="tagline">A tale of <span class="tagline-1">passion</span> and <span class="tagline-2">woe</span></div>
-</section> 
-*/
-
-function displayCovers() {
-  savedCoverSection.innerHTML = "";
+function loadCover() {
   for(var i = 0; i < savedCovers.length; i++) {
     appendCover(savedCovers[i]);
   }
@@ -158,8 +148,6 @@ function setSaved() {
   buttonRandomCover.classList.add('hidden');
   buttonSaveCover.classList.add('hidden');
   buttonHome.classList.remove('hidden');
-
-  displayCovers();
 }
 
 //<><>functions<><>
@@ -190,4 +178,5 @@ function randomCover() {
     );
 }
 
+loadCover();
 init();
