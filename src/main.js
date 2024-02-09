@@ -1,3 +1,9 @@
+// we need to push the current cover into the saved covers array when a user clicks the save button
+// if the user clicks the save button again, it should not save again. 
+// need to loop through array to see if the current cover is in there to prevent this
+// when the view saved button is clicked we need to show the covers in the saved covers array
+// need to show all of the covers 
+
 //<><>querySelectors<><>
 
 var coverImage = document.querySelector('.cover-image');
@@ -20,6 +26,7 @@ var coverInput = document.querySelector('#cover');
 var titleInput = document.querySelector('#title');
 var firstDescriptorInput = document.querySelector('#descriptor1');
 var secondDescriptorInput = document.querySelector('#descriptor2');
+var savedCoverSection = document.querySelector('.saved-covers-section');
 
 //<><>variables<><>
 
@@ -35,9 +42,9 @@ buttonRandomCover.addEventListener('click', init);
 buttonHome.addEventListener('click', setHome);
 buttonMakeOwn.addEventListener('click', setMake);
 buttonViewSaved.addEventListener('click', setSaved);
-buttonCreateBook.addEventListener('click', saveCover);
-buttonCreateBook.addEventListener('click', saveCover);
-
+buttonCreateBook.addEventListener('click', getCover);
+buttonCreateBook.addEventListener('click', getCover);
+buttonSaveCover.addEventListener('click', saveCover);
 
 //<><>event handler functions<><>
 
@@ -46,7 +53,19 @@ function init() {
   updateCover();
 };
 
-function saveCover(e) {
+function saveCover() {
+  for (var i = 0; i < savedCovers.length; i++) {
+    if (currentCover === savedCovers[i]) {
+      console.log(currentCover);
+      return
+    };
+  }
+  savedCovers.push(currentCover)
+};
+
+
+
+function getCover(e) {
   covers.push(coverInput.value);
   titles.push(titleInput.value);
   descriptors.push(firstDescriptorInput.value);
@@ -67,6 +86,41 @@ function saveCover(e) {
   descriptor2.value = '';
 
   e.preventDefault();
+}
+
+/* 
+<section class="mini-cover">
+  <img class="cover-image" src="./assets/prairie.jpg">
+  <div class="cover-title">Test Title</div>
+  <div class="tagline">A tale of <span class="tagline-1">passion</span> and <span class="tagline-2">woe</span></div>
+</section> 
+*/
+
+function displayCovers() {
+  savedCoverSection.innerHTML = "";
+  for(var i = 0; i < savedCovers.length; i++) {
+    appendCover(savedCovers[i]);
+  }
+};
+
+function appendCover(cover) {
+  var savedTitleElement = document.createElement('section');
+  savedTitleElement.classList.add('mini-cover');
+  var imageElement = document.createElement('img');
+  imageElement.classList.add('cover-image');
+  imageElement.src = cover.coverImg;
+  var coverElement = document.createElement('div');
+  coverElement.classList.add('cover-title');
+  coverElement.innerText = cover.title;
+  var taglineElement = document.createElement('div');
+  taglineElement.classList.add('tagline');
+  taglineElement.innerText = `A tale of ${cover.tagline1} and ${cover.tagline2}.`
+
+  savedTitleElement.appendChild(imageElement);
+  savedTitleElement.appendChild(coverElement);
+  savedTitleElement.appendChild(taglineElement); 
+
+  savedCoverSection.appendChild(savedTitleElement);
 }
 
 function updateCover() {
@@ -104,6 +158,8 @@ function setSaved() {
   buttonRandomCover.classList.add('hidden');
   buttonSaveCover.classList.add('hidden');
   buttonHome.classList.remove('hidden');
+
+  displayCovers();
 }
 
 //<><>functions<><>
@@ -135,9 +191,3 @@ function randomCover() {
 }
 
 init();
-
-// should fill out inputs value into fields
-// cover is made based on input values
-// save submitted info into proper arrays
-// setHome button to hide
-// create new cover using inputted values
