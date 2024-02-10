@@ -119,8 +119,13 @@ function appendCover(cover) {
   savedTitleElement.appendChild(imageElement);
   savedTitleElement.appendChild(coverElement);
   savedTitleElement.appendChild(taglineElement); 
+  savedTitleElement.addEventListener('click', removeCover);
 
   savedCoverSection.appendChild(savedTitleElement);
+};
+
+function removeCover(e) {
+  if (e.detail === 2) e.currentTarget.remove();
 }
 
 function updateCover() {
